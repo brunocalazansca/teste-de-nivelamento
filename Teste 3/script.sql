@@ -99,21 +99,29 @@ SELECT
 FROM relatorio_temporario;
 
 SELECT 
-    reg_ans, 
-    SUM(vl_saldo_final) AS total_despesas
-FROM relatorios_trimestrais
-WHERE descricao ILIKE 'EVENTOS/ SINISTROS CONHECIDOS OU AVISADOS NA MODALIDADE DE PAGAMENTO POR PROCEDIMENTO'
-AND data = (SELECT MAX(data) FROM relatorios_trimestrais)
-GROUP BY reg_ans
-ORDER BY total_despesas DESC
+    r.reg_ans,
+    c.razao_social,
+    SUM(r.vl_saldo_final) AS despesas_totais
+FROM relatorios_trimestrais r
+JOIN relatorio_cadop c ON r.reg_ans = c.registro_ans
+WHERE r.descricao ILIKE 'EVENTOS/ SINISTROS CONHECIDOS OU AVISADOS NA MODALIDADE DE PAGAMENTO POR PROCEDIMENTO'
+AND r.data >= (
+    SELECT DATE_TRUNC('quarter', MAX(data)) FROM relatorios_trimestrais
+)
+GROUP BY r.reg_ans, c.razao_social
+ORDER BY despesas_totais DESC
 LIMIT 10;
 
 SELECT 
-    reg_ans, 
-    SUM(vl_saldo_final) AS total_despesas
-FROM relatorios_trimestrais
-WHERE descricao ILIKE 'EVENTOS/ SINISTROS CONHECIDOS OU AVISADOS NA MODALIDADE DE PAGAMENTO POR PROCEDIMENTO'
-AND data >= (SELECT DATE_TRUNC('year', MAX(data)) FROM relatorios_trimestrais)
-GROUP BY reg_ans
-ORDER BY total_despesas DESC
+    r.reg_ans,
+    c.razao_social,
+    SUM(r.vl_saldo_final) AS despesas_totais
+FROM relatorios_trimestrais r
+JOIN relatorio_cadop c ON r.reg_ans = c.registro_ans
+WHERE r.descricao ILIKE 'EVENTOS/ SINISTROS CONHECIDOS OU AVISADOS NA MODALIDADE DE PAGAMENTO POR PROCEDIMENTO'
+AND r.data >= (
+    SELECT DATE_TRUNC('year', MAX(data)) FROM relatorios_trimestrais
+) -- Obtém o primeiro dia do último ano disponível
+GROUP BY r.reg_ans, c.razao_social
+ORDER BY despesas_totais DESC
 LIMIT 10;
