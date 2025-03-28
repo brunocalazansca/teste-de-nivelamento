@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <h1>Buscar Operadoras</h1>
-    <input v-model="busca" @keyup.enter="buscarOperadoras" placeholder="Digite o registro da operadora" />
+    <input v-model="busca" @keyup.enter="buscarOperadoras" placeholder="Digite a razão social da operadora" />
     <button @click="buscarOperadoras">Buscar</button>
 
     <div v-if="isLoading">Carregando...</div>
@@ -9,8 +9,8 @@
     <table v-if="!isLoading && operadoras.length > 0">
       <thead>
         <tr>
+          <th>Registro ANS</th>
           <th>Razão Social</th>
-          <th>Nome Fantasia</th>
           <th>CNPJ</th>
           <th>Representante</th>
           <th>Cidade</th>
@@ -21,8 +21,8 @@
       </thead>
       <tbody>
         <tr v-for="operadora in operadoras" :key="operadora.CNPJ">
+          <td>{{ operadora.Registro_ANS }}</td>
           <td>{{ operadora.Razao_Social }}</td>
-          <td>{{ operadora.Nome_Fantasia }}</td>
           <td>{{ operadora.CNPJ }}</td>
           <td>{{ operadora.Representante }}</td>
           <td>{{ operadora.Cidade }}</td>

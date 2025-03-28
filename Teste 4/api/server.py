@@ -5,7 +5,7 @@ from flask_cors import CORS
 app = Flask(__name__)
 CORS(app)
 
-df = pd.read_csv("../Relatorio_cadop.csv", sep=";", dtype=str, on_bad_lines="skip")
+df = pd.read_csv("../csv/Relatorio_cadop.csv", sep=";", dtype=str, on_bad_lines="skip")
 
 @app.route("/buscar", methods=["GET"])
 def buscar_operadoras():
