@@ -39,7 +39,7 @@ def obter_url():
     navegador.quit()
     return urls
 
-def baixar_documento(url, nomeAnexo):
+def baixarDocumento(url, nomeAnexo):
     response = requests.get(url, stream = True)
     if response.status_code == 200:
         with open(nomeAnexo, "wb") as file:
@@ -52,7 +52,7 @@ def baixar_documento(url, nomeAnexo):
     else:
         print(f"Erro ao baixar: " + nomeAnexo)
 
-def compactar_pdf(arquivos, diretorio, nomeArquivo):
+def compactarPdf(arquivos, diretorio, nomeArquivo):
     os.makedirs(diretorio, exist_ok = True)
 
     for arquivo in arquivos:
@@ -65,6 +65,6 @@ def compactar_pdf(arquivos, diretorio, nomeArquivo):
 urls = obter_url()
 
 for i, url in enumerate(urls):
-    baixar_documento(url, "Anexo_" + str(i + 1) +".pdf")
+    baixarDocumento(url, "Anexo_" + str(i + 1) +".pdf")
 
-compactar_pdf(nomeAnexos, diretorioDestino, nomeArquivoCompactado)
+compactarPdf(nomeAnexos, diretorioDestino, nomeArquivoCompactado)

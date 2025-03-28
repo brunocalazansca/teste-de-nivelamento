@@ -1,11 +1,13 @@
+import os
 import shutil
 import pandas as pd
 import pdfplumber
 import csv
 
-caminhoArquivo = "Anexo_I.pdf"
+caminhoArquivo = "pdf/Anexo_I.pdf"
 arquivoCsv = "Anexo_I.csv"
 nomeArquivoCompactado = "Teste_Bruno_Calazans_Carritilha"
+diretorioDestino = "Anexo"
 
 paginaInicial = 2
 
@@ -46,6 +48,15 @@ def alterarAbreviacao():
     dataFrame.to_csv(arquivoCsv, index = False, encoding="utf-8")
     print("Abreviações alteradas com sucesso!")
 
+def moverArquivos(diretorio, arquivo, nome):
+    os.makedirs(diretorio, exist_ok=True)
+
+    shutil.move(arquivo, os.path.join(diretorio, os.path.basename(arquivo)))
+    shutil.move(nome, os.path.join(diretorio, os.path.basename(nome)))
+
+    print("Arquivos movidos com sucesso!")
+
 copiarDados()
 compactar(nomeArquivoCompactado)
 alterarAbreviacao()
+moverArquivos(diretorioDestino, arquivoCsv, nomeArquivoCompactado + ".zip")
